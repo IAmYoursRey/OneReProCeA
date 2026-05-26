@@ -23,14 +23,6 @@ onload = () => {
     async function startCakeScene() {
         document.body.classList.add("not-loaded");
         await drawCakeAnimated();
-
-        await sleep(500); 
-        ctx.font = `bold ${Math.min(20, width / 25)}px Arial`;
-        ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
-        ctx.textAlign = "center";
-        
-        ctx.fillText("( Klik )", width / 2, height / 2 + (250 * Math.min(1, width / 600)));
-
         isWaitingForClick = true;
     }
 
@@ -174,12 +166,12 @@ onload = () => {
             ctx.lineWidth = 3 * scale;
             ctx.beginPath(); ctx.moveTo(tx(x_pos), ty(y_base+h)); ctx.lineTo(tx(x_pos), ty(y_base+h+10)); ctx.stroke();
             await sleep(10);
-            
-            let ptsF = [{x: tx(ex(4, 0) + x_pos), y: ty(ey(10, 0) + y_base+h+20)}];
-            for(let d=0; d<360; d+=20) ptsF.push({x: tx(ex(4, d) + x_pos), y: ty(ey(10, d) + y_base+h+20)});
-            ptsF.push({x: tx(ex(4, 0) + x_pos), y: ty(ey(10, 0) + y_base+h+20)});
-            await drawTurtle(ptsF, "transparent", "#ff6600", 2);
         }
+
+        const staticCakeCanvas = document.createElement('canvas');
+        staticCakeCanvas.width = width;
+        staticCakeCanvas.height = height;
+        staticCakeCanvas.getContext('2d').drawImage(canvas, 0, 0);
 
         const confettiColors = ["#4CAF50", "#FFC107", "#2196F3", "#FF5722", "#9C27B0", "#3F51B5", "#00BCD4", "#009688"];
         const regions = [
@@ -191,27 +183,82 @@ onload = () => {
         let confettiBatch = [];
         regions.forEach(r => {
             for(let i=0; i<r[0]; i++) {
-                let rx = Math.random()*(r[2]-r[1]) + r[1], ry = Math.random()*(r[4]-r[3]) + r[3], size = Math.random()*(r[6]-r[5]) + r[5];
-                confettiBatch.push({x: tx(rx), y: ty(ry), size: size * scale, color: confettiColors[Math.floor(Math.random()*confettiColors.length)]});
+                let rx = Math.random()*(r[2]-r[1]) + r[1];
+                let ry = Math.random()*(r[4]-r[3]) + r[3];
+                let size = Math.random()*(r[6]-r[5]) + r[5];
+                confettiBatch.push({
+                    baseX: tx(rx),
+                    y: ty(ry),
+                    size: size * scale,
+                    color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+                    vy: Math.random() * 1.5 + 0.5, 
+                    sway: Math.random() * 20, 
+                    swaySpeed: Math.random() * 0.05 + 0.02,
+                    angle: Math.random() * Math.PI * 2
+                });
             }
         });
-        
-        for(let i=0; i<confettiBatch.length; i++) {
-            ctx.beginPath(); 
-            ctx.arc(confettiBatch[i].x, confettiBatch[i].y, confettiBatch[i].size, 0, Math.PI*2);
-            ctx.fillStyle = confettiBatch[i].color; 
-            ctx.fill();
-            if (i % 8 === 0) await sleep(5);
-        }
 
-        await sleep(300);
-        ctx.font = `bold ${50 * scale}px 'Curlz MT', cursive, sans-serif`;
-        ctx.fillStyle = "#ff6b81"; 
-        ctx.shadowBlur = 15;
-        ctx.shadowColor = "rgba(255, 107, 129, 1)"; 
-        ctx.textAlign = "center";
-        ctx.fillText("Happy Birthday Test", tx(0), ty(270));
-        ctx.shadowBlur = 0; 
+        function animateIdle() {
+            if (isTransitioning) return; 
+            
+            ctx.clearRect(0, 0, width, height);
+            ctx.drawImage(staticCakeCanvas, 0, 0); 
+
+            const time = Date.now() * 0.005;
+
+            candles.forEach((c, index) => {
+                let x_pos = c[0], y_base = c[1], h = c[2];
+                let flicker = Math.sin(time + index * 2); 
+                let fx = tx(x_pos) + flicker * scale * 1.5;
+                let fy = ty(y_base + h + 20); 
+
+                let fw = (4 + Math.random() * 0.5) * scale;
+                let fh = (10 + Math.random() * 1.5) * scale;
+
+                ctx.beginPath();
+                ctx.ellipse(fx, fy, fw, fh, 0, 0, Math.PI*2);
+                ctx.fillStyle = "#ff6600";
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.ellipse(fx, fy + fh*0.2, fw*0.6, fh*0.6, 0, 0, Math.PI*2);
+                ctx.fillStyle = "#ffcc00";
+                ctx.fill();
+            });
+
+            confettiBatch.forEach(c => {
+                c.y += c.vy; 
+                c.angle += c.swaySpeed; 
+                let currentX = c.baseX + Math.sin(c.angle) * c.sway * scale; 
+
+                if (c.y > height + 20) {
+                    c.y = -20;
+                    c.baseX = Math.random() * width;
+                }
+
+                ctx.beginPath(); 
+                ctx.arc(currentX, c.y, c.size, 0, Math.PI*2);
+                ctx.fillStyle = c.color; 
+                ctx.fill();
+            });
+
+            ctx.font = `bold ${50 * scale}px 'Curlz MT', cursive, sans-serif`;
+            ctx.fillStyle = "#ff6b81"; 
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = "rgba(255, 107, 129, 1)"; 
+            ctx.textAlign = "center";
+            ctx.fillText("Happy Birthday Test", tx(0), ty(270));
+            ctx.shadowBlur = 0; 
+
+            let blink = Math.abs(Math.sin(time * 0.5));
+            ctx.font = `bold ${Math.min(20, width / 25)}px Arial`;
+            ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + blink * 0.7})`;
+            ctx.fillText("( Klik Atau Sentuh Layar Untuk Melanjutkan )", width / 2, height / 2 + (250 * Math.min(1, width / 600)));
+
+            requestAnimationFrame(animateIdle);
+        }
+        animateIdle();
     }
 
     function initPoppingHearts() {
