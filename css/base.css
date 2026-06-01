@@ -1,0 +1,19 @@
+*, *::after, *::before { padding: 0; margin: 0; box-sizing: border-box; }
+:root { --dark-color: #000; }
+html, body { width: 100vw; height: 100vh; height: 100dvh; margin: 0; padding: 0; display: flex; align-items: flex-end; justify-content: center; background-color: var(--dark-color); overflow: hidden; touch-action: none; perspective: 1000px; }
+.night { position: fixed; left: 50%; top: 0; transform: translateX(-50%); width: 100%; height: 100%; filter: blur(0.1vmin); }
+.not-loaded * { animation-play-state: paused !important; }
+.not-loaded .flowers, .not-loaded .tanah-oval { display: none !important; }
+#rippleCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 90; }
+
+.tanah-oval {
+    position: absolute; bottom: 10vmin; left: 50%; transform: translateX(-50%); width: 90vw; height: 40vmin;
+    background: radial-gradient(ellipse at 50% 90%, rgba(7, 52, 53, 0.85) 0%, rgba(7, 52, 53, 0.4) 40%, rgba(7, 52, 53, 0.05) 65%, transparent 80%);
+    filter: blur(3vmin); z-index: -100 !important; pointer-events: none; opacity: 0;
+    animation: tanah-muncul 2.5s 3s ease-in-out forwards !important;
+}
+@keyframes tanah-muncul { 0% { opacity: 0; } 100% { opacity: 1; } }
+@media (max-width: 768px) {
+  .flowers { transform-origin: bottom center; transform: scale(0.65); margin-bottom: 8vh; }
+  .butterfly { transform: scale(0.7); }
+}
