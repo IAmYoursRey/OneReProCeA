@@ -1,0 +1,160 @@
+*, *::after, *::before { 
+  padding: 0; 
+  margin: 0; 
+  box-sizing: border-box; 
+}
+
+:root { 
+  --dark-color: #000; 
+}
+
+html, body { 
+  width: 100vw; 
+  height: 100vh; 
+  height: 100dvh; 
+  margin: 0; 
+  padding: 0; 
+  display: flex; 
+  align-items: flex-end; 
+  justify-content: center; 
+  background-color: var(--dark-color); 
+  overflow: hidden; 
+  touch-action: none; 
+  perspective: 1000px; 
+}
+
+.night { 
+  position: fixed; 
+  left: 50%; 
+  top: 0; 
+  transform: translateX(-50%); 
+  width: 100%; 
+  height: 100%; 
+  filter: blur(0.1vmin); 
+}
+
+.not-loaded * { 
+  animation-play-state: paused !important; 
+}
+
+.not-loaded 
+.flowers, 
+.not-loaded 
+.tanah-oval { 
+  display: none !important; 
+}
+
+#rippleCanvas { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  pointer-events: none; 
+  z-index: 90; 
+}
+
+.tanah-oval {
+  position: absolute; 
+  bottom: 10vmin; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 90vw; 
+  height: 40vmin;
+  background: radial-gradient
+    (ellipse at 50% 90%, rgba(7, 52, 53, 0.85) 0%, rgba(7, 52, 53, 0.4) 40%, rgba(7, 52, 53, 0.05) 65%, transparent 80%);
+  filter: blur(3vmin); 
+  z-index: -100 !important; 
+  pointer-events: none; 
+  opacity: 0;
+  animation: tanah-muncul 2.5s 3s ease-in-out forwards !important;
+}
+
+@keyframes tanah-muncul { 0% { opacity: 0; } 100% { opacity: 1; } }
+@media (max-width: 768px) {
+  .flowers { 
+    transform-origin: bottom center; 
+    transform: scale(0.65); 
+    margin-bottom: 8vh; 
+  }
+
+  .butterfly { 
+    transform: scale(0.7); 
+  }
+}
+
+/* ===================================================
+   BINTANG & RASI CANCER (NIGHT SKY)
+   =================================================== */
+.night {
+  z-index: -200; /* Memastikan langit malam selalu di belakang segalanya */
+}
+
+.bg-star {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 4px #ffffff, 0 0 8px #87cefa; /* Cahaya biru langit malam */
+  animation: twinkle 3s infinite alternate ease-in-out;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.1; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+.constellation-wrapper {
+  position: absolute;
+  top: 15%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vmin; 
+  height: 70vmin;
+  z-index: 5;
+}
+
+.cancer-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(135, 206, 250, 0.8)); /* Soft glow di seluruh rasi */
+}
+
+.c-line {
+  stroke: rgba(200, 230, 255, 0.6);
+  stroke-width: 0.8;
+  stroke-dasharray: 200; 
+  stroke-dashoffset: 200; /* Memaksa garis bersembunyi di awal */
+  /* Animasi menggambar garis dimulai di detik 3.5 */
+  animation: draw-line 3s 3.5s forwards, pulse-line 4s 6.5s infinite alternate; 
+}
+
+.c-star {
+  fill: #ffffff;
+  opacity: 0;
+  /* Bintang utama menyala duluan di detik 2 */
+  animation: appear-star 2s 2s forwards, pulse-star 2s 4s infinite alternate;
+}
+
+.c-star:nth-child(even) {
+  animation-delay: 2.5s, 4.5s; 
+}
+
+/* KUMPULAN ANIMASI RASI BINTANG */
+@keyframes appear-star {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; } /* Garis ditarik menghubungkan bintang */
+}
+
+@keyframes pulse-line {
+  0% { stroke: rgba(150, 200, 255, 0.3); }
+  100% { stroke: rgba(255, 255, 255, 0.8); }
+}
+
+@keyframes pulse-star {
+  0% { filter: drop-shadow(0 0 4px #87cefa); fill: #e0f0ff; }
+  100% { filter: drop-shadow(0 0 15px #ffffff); fill: #ffffff; }
+}
