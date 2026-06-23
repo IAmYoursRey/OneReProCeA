@@ -9,7 +9,8 @@
 
 .flowers {
   position: relative;
-  transform: scale(0.9);
+  transform: scale(0.9) translateZ(0);
+  will-change: transform, opacity;
 }
 
 .flowers::after {
