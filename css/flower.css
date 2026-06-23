@@ -624,6 +624,14 @@
   animation: env-sway 4s ease-in-out infinite; 
 }
 
+.env-seal {
+  position: absolute; width: 12vmin; height: 12vmin; background: #ff4d6d; border-radius: 50%;
+  top: 30vmin; left: 40vmin; transform: translate(-50%, -50%); z-index: 6;
+  box-shadow: 0 0.5vmin 1vmin rgba(0,0,0,0.2), inset 0 0 1vmin rgba(255,255,255,0.3);
+  display: flex; justify-content: center; align-items: center; color: white; font-size: 6vmin; font-weight: bold;
+  animation: seal-break 0.8s 1.8s forwards;
+}
+
 .env-seal::after { content: "♥"; }
 
 .envelope-wrapper.is-opened {
@@ -730,4 +738,24 @@
 .replay-msg-btn.show-btn { 
   opacity: 1; 
   visibility: visible; 
+}
+
+@media (max-width: 768px) {
+  .flower__light:nth-child(n+4) {
+    display: none !important;
+  }
+
+  .flower__light {
+    filter: none !important;
+    box-shadow: 0 0 3px rgba(255, 251, 0, 0.8); 
+  }
+  
+  .flower__leafs::after {
+    filter: blur(2vmin) !important; 
+    opacity: 0.4 !important;
+  }
+
+  .flower::after {
+    display: none !important;
+  }
 }
