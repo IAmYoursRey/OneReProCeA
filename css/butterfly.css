@@ -1,0 +1,65 @@
+.butterfly-system {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+  z-index: 30; pointer-events: none; perspective: 1000px;
+}
+
+.butterfly {
+  position: absolute; bottom: 25vh; left: 50%; width: 14vmin; height: 14vmin; 
+  margin-left: -7vmin; margin-bottom: -7vmin; transition: opacity 1s; transform-style: preserve-3d;
+}
+
+.butterfly__inner { width: 100%; height: 100%; transform-style: preserve-3d; }
+
+.butterfly__svg { 
+  width: 100%; height: 100%; overflow: visible; filter: drop-shadow(0 0 5px rgba(255, 100, 180, 0.6)); 
+}
+
+.butterfly__wing { transform-origin: 50% 50%; fill: #ff8fa3; opacity: 0.85; }
+.butterfly__wing--left { animation: flutter-left 0.18s cubic-bezier(0.1, 0.9, 0.2, 1) infinite; }
+.butterfly__wing--right { animation: flutter-right 0.18s cubic-bezier(0.1, 0.9, 0.2, 1) infinite; }
+
+.butterfly__body { fill: #ff4d6d; }
+
+.butterfly--boss { z-index: 50; }
+.butterfly--boss 
+
+.butterfly__svg { 
+  width: 100%; height: 100%; overflow: visible; 
+  filter: drop-shadow(0 0 5px rgba(255, 100, 180, 0.6)); 
+  transform: translateZ(0); 
+  will-change: transform, filter; 
+}
+.butterfly--boss 
+.butterfly__wing { fill: #ffeb3b; opacity: 0.9; }
+.butterfly--boss 
+.butterfly__body { fill: #fff; }
+
+.boss-particles { position: absolute; top: 70%; left: 50%; width: 100%; height: 100%; }
+.boss-p { 
+  position: absolute; width: 0.8vmin; height: 0.8vmin; background-color: #fff; border-radius: 50%; 
+  box-shadow: 0 0 8px #ffeb3b, 0 0 15px #ffeb3b; animation: particle-drop 2s infinite linear; 
+}
+
+.p1 { left: -3vmin; animation-delay: 0s; }
+.p2 { left: 3vmin; animation-delay: 0.4s; }
+.p3 { left: -5vmin; animation-delay: 0.8s; }
+.p4 { left: 5vmin; animation-delay: 1.2s; }
+.p5 { left: -1vmin; animation-delay: 1.6s; }
+.p6 { left: 1vmin; animation-delay: 1.8s; }
+
+@keyframes flutter-left {
+  0%   { transform: rotateY(0deg); }
+  25%  { transform: rotateY(65deg); } 
+  30%  { transform: rotateY(75deg); } 
+  100% { transform: rotateY(0deg); } 
+}
+@keyframes flutter-right {
+  0%   { transform: rotateY(0deg); }
+  25%  { transform: rotateY(-65deg); }
+  30%  { transform: rotateY(-75deg); } 
+  100% { transform: rotateY(0deg); }   
+}
+@keyframes particle-drop { 
+  0% { transform: translateY(0) scale(1); opacity: 1; } 
+  100% { transform: translateY(20vmin) scale(0); opacity: 0; } 
+}

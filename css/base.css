@@ -1,0 +1,181 @@
+*, *::after, *::before { 
+  padding: 0; 
+  margin: 0; 
+  box-sizing: border-box; 
+}
+
+:root { 
+  --dark-color: #000; 
+}
+
+html, body { 
+  width: 100vw; 
+  height: 100vh; 
+  height: 100dvh; 
+  margin: 0; 
+  padding: 0; 
+  display: flex; 
+  align-items: flex-end; 
+  justify-content: center; 
+  background-color: var(--dark-color); 
+  overflow: hidden; 
+  touch-action: none; 
+  perspective: 1000px; 
+}
+
+.not-loaded * { 
+  animation-play-state: paused !important; 
+}
+
+.not-loaded .flowers, 
+.not-loaded .tanah-oval { 
+  display: none !important; 
+}
+
+#rippleCanvas { 
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  width: 100vw; 
+  height: 100vh; 
+  pointer-events: none; 
+  z-index: 90; 
+}
+
+.tanah-oval {
+  position: absolute; 
+  bottom: 10vmin; 
+  left: 50%; 
+  transform: translateX(-50%); 
+  width: 90vw; 
+  height: 40vmin;
+  background: radial-gradient(ellipse at 50% 90%, rgba(7, 52, 53, 0.85) 0%, rgba(7, 52, 53, 0.4) 40%, rgba(7, 52, 53, 0.05) 65%, transparent 80%);
+  filter: blur(3vmin); 
+  z-index: -100 !important; 
+  pointer-events: none; 
+  opacity: 0;
+  animation: tanah-muncul 2.5s 3s ease-in-out forwards !important;
+}
+
+@keyframes tanah-muncul { 
+  0% { opacity: 0; } 
+  100% { opacity: 1; } 
+}
+
+@media (max-width: 768px) {
+  .flowers { 
+    transform-origin: bottom center; 
+    transform: scale(0.65); 
+    margin-bottom: 8vh; 
+  }
+  .butterfly { 
+    transform: scale(0.7); 
+  }
+}
+
+.night {
+  position: fixed; left: 0; top: 0; width: 100%; height: 100%;
+  z-index: -200; overflow: hidden;
+  background-color: #050510; 
+}
+
+.nebula {
+  position: absolute; border-radius: 50%;
+  filter: blur(10vmin); 
+  opacity: 0.8;
+  animation: nebula-drift 30s infinite alternate ease-in-out;
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.nebula-pink { 
+  top: -10%; left: -20%; 
+  width: 140vmin; height: 140vmin; 
+  background: radial-gradient(circle, rgba(235, 64, 115, 0.65) 0%, rgba(139, 24, 74, 0.3) 40%, transparent 70%); 
+}
+
+.nebula-blue { 
+  top: -10%; right: -20%; 
+  width: 150vmin; height: 150vmin; 
+  background: radial-gradient(circle, rgba(74, 144, 226, 0.5) 0%, rgba(36, 75, 145, 0.25) 40%, transparent 70%); 
+  animation-delay: -5s;
+}
+
+.nebula-dark { 
+  top: 15%; left: 15%; 
+  width: 100vmin; height: 100vmin;
+  background: radial-gradient(circle, rgba(5, 5, 10, 0.95) 0%, rgba(15, 15, 25, 0.7) 30%, transparent 60%); 
+  animation-delay: -10s; z-index: 1; 
+}
+
+@keyframes nebula-drift {
+  0%   { transform: translate(0, 0) rotate(0deg); opacity: 0.4; }
+  50%  { transform: translate(5vmin, -3vmin) rotate(5deg); opacity: 0.7; }
+  100% { transform: translate(-3vmin, 5vmin) rotate(-5deg); opacity: 0.4; }
+}
+
+.bg-star {
+  position: absolute;
+  background-color: var(--star-color, #ffffff);
+  border-radius: 50%;
+  box-shadow: 0 0 3px var(--star-color, #ffffff), 0 0 8px var(--star-color, #ffffff);
+  left: 50vw; bottom: 25vh; opacity: 0; 
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+@keyframes star-shoot {
+  0% { transform: translate(0, 0) scale(0); opacity: 0; }
+  10% { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) scale(1); opacity: 1; }
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.2; transform: translate(var(--tx), var(--ty)) scale(0.8); }
+  100% { opacity: 1; transform: translate(var(--tx), var(--ty)) scale(1.2); }
+}
+
+.constellation-wrapper {
+  position: absolute;
+  top: 15%; 
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70vmin; 
+  height: 70vmin;
+  z-index: 5;
+}
+
+.cancer-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 8px rgba(135, 206, 250, 0.9)); 
+}
+
+.c-line {
+  stroke: rgba(200, 230, 255, 0.7);
+  stroke-width: 0.3; 
+  stroke-dasharray: 200; 
+  stroke-dashoffset: 200; 
+  animation: draw-line 4s 4.5s forwards, pulse-line 4s 8.5s infinite alternate; 
+}
+
+.c-star {
+  fill: #ffffff;
+  opacity: 0;
+  animation: appear-star 2s 3s forwards, pulse-star 2s 5s infinite alternate;
+}
+
+.c-star:nth-child(even) { animation-delay: 3.5s, 5.5s; }
+
+@keyframes draw-line { to { stroke-dashoffset: 0; } }
+@keyframes appear-star { to { opacity: 1; } }
+
+@keyframes pulse-line {
+  0% { stroke: rgba(150, 200, 255, 0.4); stroke-width: 0.3; }
+  100% { stroke: rgba(255, 255, 255, 1); stroke-width: 0.4; }
+}
+
+@keyframes pulse-star {
+  0% { filter: drop-shadow(0 0 4px #87cefa); fill: #e0f0ff; }
+  100% { filter: drop-shadow(0 0 15px #ffffff); fill: #ffffff; }
+}
