@@ -1,5 +1,3 @@
-// file: js/cake.js
-
 async function drawCakeAnimated() {
     window.ctx.clearRect(0, 0, window.width, window.height);
     
@@ -27,6 +25,7 @@ async function drawCakeAnimated() {
             window.ctx.lineTo(pts[i].x, pts[i].y);
             if (i % drawSpeed === 0) { window.ctx.stroke(); await window.sleep(0); }
         }
+
         window.ctx.lineTo(pts[0].x, pts[0].y); 
         window.ctx.closePath(); 
         

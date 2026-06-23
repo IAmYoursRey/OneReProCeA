@@ -575,6 +575,23 @@
   margin-bottom: 2vmin;
 }
 
+.page-number {
+  position: absolute;
+  bottom: 2vmin; 
+  left: 50%;
+  transform: translateX(-50%); 
+  font-family: 'Arial', sans-serif;
+  font-size: 3vmin;
+  color: #a0a0a0; 
+  font-weight: bold;
+  opacity: 0;
+}
+
+.envelope-wrapper.is-opened .active-page .page-number {
+  opacity: 1;
+  transition: opacity 0.6s 0.2s;
+}
+
 .paper-body {
   font-family: 'Arial', sans-serif; 
   font-size: 3.5vmin; color: #444; 
@@ -758,4 +775,27 @@
   .flower::after {
     display: none !important;
   }
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.4); 
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 140; 
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.8s ease-in-out;
+  pointer-events: none; 
+}
+
+body.is-reading-letter::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+.butterfly-system {
+  z-index: 145 !important; 
 }

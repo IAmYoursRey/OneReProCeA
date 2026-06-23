@@ -75,9 +75,8 @@ window.onload = () => {
             if (envelopeWrapper) envelopeWrapper.dataset.clickable = "true";
         }, 3500); 
 
-        // 2. LOGIKA KERTAS (Tumpukan Dinamis & Posisi Aman dalam Amplop)
         const envelopeWrapper = document.getElementById('envelope-wrapper');
-        const replayBtn = document.getElementById('replay-msg-btn'); // MEMANGGIL TOMBOL REPLAY
+        const replayBtn = document.getElementById('replay-msg-btn'); 
 
         if (envelopeWrapper) {
             let currentPage = 0;
@@ -124,20 +123,41 @@ window.onload = () => {
             }
             updatePages(); 
 
-            envelopeWrapper.addEventListener('click', function() {
+            let startX = 0; 
+
+            envelopeWrapper.addEventListener('pointerdown', function(e) {
+                startX = e.clientX;
+            });
+
+            envelopeWrapper.addEventListener('pointerup', function(e) {
                 if (this.dataset.clickable !== "true") return; 
                 const pages = document.querySelectorAll('.paper-page');
                 
+                let endX = e.clientX;
+                let deltaX = endX - startX; 
+
                 if (!this.classList.contains('is-opened')) {
                     this.classList.add('is-opened'); 
+                    document.body.classList.add('is-reading-letter'); 
                     setTimeout(() => { updatePages(); }, 400);
                 } else if (!this.classList.contains('is-hidden')) {
-                    if (currentPage < pages.length - 1) {
-                        currentPage++; 
-                        updatePages();
-                    } else {
-                        this.classList.add('is-hidden'); 
-                        if (replayBtn) replayBtn.classList.add('show-btn');
+                    
+                    if (deltaX > 50) {
+                        if (currentPage > 0) {
+                            currentPage--; 
+                            updatePages();
+                        }
+                    } 
+
+                    else {
+                        if (currentPage < pages.length - 1) {
+                            currentPage++; 
+                            updatePages();
+                        } else {
+                            this.classList.add('is-hidden'); 
+                            document.body.classList.remove('is-reading-letter'); 
+                            if (replayBtn) replayBtn.classList.add('show-btn');
+                        }
                     }
                 }
             });
@@ -153,6 +173,7 @@ window.onload = () => {
                     void envelopeWrapper.offsetWidth; 
 
                     envelopeWrapper.classList.add('is-opened');
+                    document.body.classList.add('is-reading-letter'); 
                 });
             }
         }
