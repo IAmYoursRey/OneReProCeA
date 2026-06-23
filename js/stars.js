@@ -12,11 +12,8 @@ window.initStarryNight = function() {
         night.appendChild(nebula);
     }
 
-    const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#ffddbb', '#ffb3c1']; 
-
     const isMobile = window.innerWidth <= 768;
-    const totalStars = isMobile ? 120 : 400; 
-
+    const totalStars = isMobile ? 70 : 250; 
     const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#ffddbb', '#ffb3c1']; 
     
     for (let i = 0; i < totalStars; i++) { 

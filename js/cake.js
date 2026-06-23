@@ -20,15 +20,18 @@ async function drawCakeAnimated() {
         let useStroke = (strokecolor && strokecolor !== "transparent");
         window.ctx.strokeStyle = useStroke ? strokecolor : fillcolor;
         window.ctx.fillStyle = fillcolor;
+        
         window.ctx.beginPath();
         window.ctx.moveTo(pts[0].x, pts[0].y);
         for (let i = 1; i < pts.length; i++) {
             window.ctx.lineTo(pts[i].x, pts[i].y);
             if (i % drawSpeed === 0) { window.ctx.stroke(); await window.sleep(0); }
         }
-        window.ctx.stroke(); 
-        if (fillcolor && fillcolor !== "transparent") window.ctx.fill();
+        window.ctx.lineTo(pts[0].x, pts[0].y); 
+        window.ctx.closePath(); 
+        
         if (useStroke && strokecolor !== fillcolor) window.ctx.stroke();
+        if (fillcolor && fillcolor !== "transparent") window.ctx.fill();
     }
 
     async function animateEllipse(w, h, stroke, fill, yOff, step = 3) {

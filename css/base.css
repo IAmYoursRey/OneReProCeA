@@ -153,10 +153,15 @@ html, body {
 
 .c-line {
   stroke: rgba(200, 230, 255, 0.7);
-  stroke-width: 0.3; 
+  stroke-width: 0.15; 
   stroke-dasharray: 200; 
   stroke-dashoffset: 200; 
   animation: draw-line 4s 4.5s forwards, pulse-line 4s 8.5s infinite alternate; 
+}
+
+@keyframes pulse-line {
+  0% { stroke: rgba(150, 200, 255, 0.4); stroke-width: 0.15; }
+  100% { stroke: rgba(255, 255, 255, 1); stroke-width: 0.25; }
 }
 
 .c-star {

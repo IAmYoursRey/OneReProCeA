@@ -16,6 +16,16 @@ function initPoppingHearts() {
         const totalParticles = isMobile ? 40 : 120;
 
         for (let i = 0; i < totalParticles; i++) {
+            particles.push({
+                x: width / 2, y: boxY,
+                vx: (Math.random() - 0.5) * 15, 
+                vy: -(Math.random() * 15 + 5), 
+                size: Math.random() * 6 + 3,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                rot: Math.random() * 360,
+                rotSpeed: (Math.random() - 0.5) * 10,
+                life: 1.0, decay: 0.005 + Math.random() * 0.01 
+            });
         }
     }, 100); 
 
