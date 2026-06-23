@@ -179,3 +179,31 @@ html, body {
   0% { filter: drop-shadow(0 0 4px #87cefa); fill: #e0f0ff; }
   100% { filter: drop-shadow(0 0 15px #ffffff); fill: #ffffff; }
 }
+
+@media (max-width: 768px) {
+
+  .nebula {
+    filter: blur(5vmin) !important;
+    opacity: 0.6 !important;
+    animation-duration: 60s !important; 
+  }
+  
+  .bg-star {
+    box-shadow: 0 0 2px var(--star-color, #ffffff) !important;
+  }
+}
+
+@media (max-width: 768px) {
+
+  .butterfly__svg {
+    filter: drop-shadow(0 0 2px rgba(255, 100, 180, 0.4)) !important;
+  }
+
+  .butterfly__wing--left, 
+  .butterfly__wing--right {
+    animation-duration: 0.4s !important; 
+  }
+  .butterfly--boss .butterfly__svg {
+    filter: drop-shadow(0 0 5px rgba(255,255,255,0.5)) !important;
+  }
+}

@@ -13,8 +13,13 @@ window.initStarryNight = function() {
     }
 
     const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#ffddbb', '#ffb3c1']; 
+
+    const isMobile = window.innerWidth <= 768;
+    const totalStars = isMobile ? 120 : 400; 
+
+    const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#ffddbb', '#ffb3c1']; 
     
-    for (let i = 0; i < 400; i++) { 
+    for (let i = 0; i < totalStars; i++) { 
         let star = document.createElement('div');
         star.className = 'bg-star';
         
@@ -36,7 +41,11 @@ window.initStarryNight = function() {
         star.style.height = size + 'px';
         
         let burstDelay = 2.5 + (Math.random() * 1.5); 
-        star.style.animation = `star-shoot 2.5s ${burstDelay}s cubic-bezier(0.25, 1, 0.5, 1) both, twinkle 4s ${burstDelay + 2.5}s infinite alternate ease-in-out`;
+
+        let speedA = isMobile ? 4 : 2.5; 
+        let speedB = isMobile ? 8 : 4;   
+
+        star.style.animation = `star-shoot ${speedA}s ${burstDelay}s cubic-bezier(0.25, 1, 0.5, 1) both, twinkle ${speedB}s ${burstDelay + 2.5}s infinite alternate ease-in-out`;
         
         night.appendChild(star);
     }
