@@ -11,51 +11,71 @@
     <link rel="stylesheet" href="css/grass.css">
     <link rel="stylesheet" href="css/butterfly.css">
 </head>
-    
 <body class="not-loaded">
+  <div id="start-screen" class="start-screen">
+    <button id="start-btn" class="start-btn">START</button>
+  </div>
+
   <canvas id="rippleCanvas"></canvas>
+  
+  <audio id="cake-audio" loop preload="auto">
+    <source src="cake1.mp3" type="audio/mpeg">
+  </audio>
+  <audio id="flower-audio" loop preload="auto">
+    <source src="flower1.mp3" type="audio/mpeg">
+  </audio>
   <div class="replay-msg-btn" id="replay-msg-btn">
     <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
   </div>
-  <canvas id="rippleCanvas"></canvas>
-    <div class="night"></div>
-    <div class="tanah-oval"></div>
+  <div class="night"></div>
+  
+  <div class="final-sky-message" id="final-sky-message">
+    <span style="--delay: 0s">Happy</span>
+    <span style="--delay: 0.6s">Birthday</span>
+    <span style="--delay: 1.2s">siapa?</span>
+  </div>
+
+  <div class="tanah-oval"></div>
     <div class="envelope-wrapper" id="envelope-wrapper">
       <div class="envelope">
         <div class="env-back"></div>
+        
         <div class="env-paper" id="env-paper">
           
           <div class="paper-page">
-            <div class="paper-title">Dear Cessa</div>
+            <div class="paper-title">Dear siapa?</div>
             <div class="paper-body"> 
               Selamat ulang tahun!<br><br>
-              Ini adalah halaman pertama. kamu yang terbaik.
+              kamu yang terbaik.
             </div>
             <div class="page-number">1</div>
           </div>
 
           <div class="paper-page">
             <div class="paper-body"> 
-              Di sini kamu bisa menulis teks yang lebih panjang atau pendek sesukamu.<br><br>
-              Posisi angka di bawah tidak akan pernah bergeser.
+              tidak<br><br>
+              baik
             </div>
             <div class="page-number">2</div>
           </div>
 
           <div class="paper-page">
             <div class="paper-body"> 
-              Ini halaman terakhir. Jika diklik, surat akan menutup.
+              terakhir
             </div>
             <div class="page-number">3</div>
           </div>
 
         </div>
+
+        <div class="env-flap env-top"></div>
+
         <div class="env-flaps">
           <div class="env-flap env-left"></div>
           <div class="env-flap env-right"></div>
           <div class="env-flap env-bottom"></div>
-          <div class="env-flap env-top"></div>
         </div>
+        
         <div class="env-seal"></div>
       </div>
     </div>

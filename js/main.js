@@ -23,14 +23,43 @@ window.onload = () => {
         ? new Promise(resolve => requestAnimationFrame(resolve)) 
         : new Promise(resolve => setTimeout(resolve, ms));
         window.blowOutTime = 0;   
+        
     if(typeof window.initStarryNight === "function") window.initStarryNight();
 
-    startCakeScene();
+    const startScreen = document.getElementById('start-screen');
+    const startBtn = document.getElementById('start-btn');
+
+    if (startBtn && startScreen) {
+        startBtn.addEventListener('click', () => {
+            const docElm = document.documentElement;
+            if (docElm.requestFullscreen) docElm.requestFullscreen();
+            else if (docElm.webkitRequestFullscreen) docElm.webkitRequestFullscreen(); 
+            else if (docElm.msRequestFullscreen) docElm.msRequestFullscreen(); 
+
+            startScreen.classList.add('hidden');
+
+            const cakeAudio = document.getElementById('cake-audio');
+            if (cakeAudio) {
+                cakeAudio.currentTime = 0; 
+                cakeAudio.volume = 0.8;    
+                cakeAudio.play().catch(e => console.log("Browser memblokir audio:", e));
+            }
+
+            setTimeout(() => {
+                startCakeScene();
+            }, 300);
+        });
+    } else {
+        startCakeScene();
+    }
 
     async function startCakeScene() {
         document.body.classList.add("not-loaded");
         await window.drawCakeAnimated();
-        isWaitingForClick = true;
+
+        setTimeout(() => {
+            isWaitingForClick = true;
+        }, 1500);
     }
 
     window.addEventListener('click', handleInteraction);
@@ -47,6 +76,18 @@ window.onload = () => {
     async function transitionToFlowers() {
         window.isBlownOut = true;
         window.blowOutTime = Date.now(); 
+
+        const cakeAudio = document.getElementById('cake-audio');
+        if (cakeAudio) {
+            let fadeOut = setInterval(() => {
+                if (cakeAudio.volume > 0.05) {
+                    cakeAudio.volume -= 0.05;
+                } else {
+                    clearInterval(fadeOut);
+                    cakeAudio.pause();
+                }
+            }, 100); 
+        }
 
         await window.sleep(800); 
 
@@ -71,8 +112,21 @@ window.onload = () => {
             const garden = document.querySelector('.flowers');
             if (garden) garden.classList.remove('garden-hidden');
 
-            const envelopeWrapper = document.getElementById('envelope-wrapper');
-            if (envelopeWrapper) envelopeWrapper.dataset.clickable = "true";
+            setTimeout(() => {
+                const flowerAudio = document.getElementById('flower-audio');
+                if (flowerAudio) {
+                    flowerAudio.currentTime = 118; 
+                    flowerAudio.volume = 0.8;
+                    flowerAudio.play().catch(e => console.log("Browser memblokir audio:", e));
+                }
+            }, 1000); 
+
+            // Aktifkan amplop surat
+            setTimeout(() => {
+                const envelopeWrapper = document.getElementById('envelope-wrapper');
+                if (envelopeWrapper) envelopeWrapper.dataset.clickable = "true";
+            }, 10500); 
+            
         }, 3500); 
 
         const envelopeWrapper = document.getElementById('envelope-wrapper');
@@ -126,11 +180,14 @@ window.onload = () => {
             let startX = 0; 
 
             envelopeWrapper.addEventListener('pointerdown', function(e) {
+                if (this.dataset.clickable !== "true" || this.dataset.animating === "true") return;
                 startX = e.clientX;
             });
 
             envelopeWrapper.addEventListener('pointerup', function(e) {
                 if (this.dataset.clickable !== "true") return; 
+                if (this.dataset.animating === "true") return;
+
                 const pages = document.querySelectorAll('.paper-page');
                 
                 let endX = e.clientX;
@@ -139,6 +196,17 @@ window.onload = () => {
                 if (!this.classList.contains('is-opened')) {
                     this.classList.add('is-opened'); 
                     document.body.classList.add('is-reading-letter'); 
+
+                    setTimeout(() => document.body.classList.add('pause-1'), 50);   
+                    setTimeout(() => document.body.classList.add('pause-2'), 250);  
+                    setTimeout(() => document.body.classList.add('pause-3'), 450);  
+
+                    this.dataset.animating = "true";
+                    setTimeout(() => { 
+                        this.dataset.animating = "false"; 
+                        this.classList.add('is-readable');
+                    }, 6000);
+
                     setTimeout(() => { updatePages(); }, 400);
                 } else if (!this.classList.contains('is-hidden')) {
                     
@@ -147,17 +215,19 @@ window.onload = () => {
                             currentPage--; 
                             updatePages();
                         }
-                    } 
-
-                    else {
+                    } else {
                         if (currentPage < pages.length - 1) {
                             currentPage++; 
                             updatePages();
                         } else {
                             this.classList.add('is-hidden'); 
-                            document.body.classList.remove('is-reading-letter'); 
+                            
+                            document.body.classList.remove('is-reading-letter', 'pause-1', 'pause-2', 'pause-3');
                             if (replayBtn) replayBtn.classList.add('show-btn');
-                        }
+                            
+                            const finalMsg = document.getElementById('final-sky-message');
+                            if (finalMsg) finalMsg.classList.add('show-message');
+                        } 
                     }
                 }
             });
@@ -165,15 +235,20 @@ window.onload = () => {
             if (replayBtn) {
                 replayBtn.addEventListener('click', function() {
                     this.classList.remove('show-btn'); 
+                    
+                    const finalMsg = document.getElementById('final-sky-message');
+                    if (finalMsg) finalMsg.classList.remove('show-message');
+                    
                     currentPage = 0; 
                     updatePages();
-                    envelopeWrapper.classList.remove('is-hidden');
-                    envelopeWrapper.classList.remove('is-opened');
                     
-                    void envelopeWrapper.offsetWidth; 
-
-                    envelopeWrapper.classList.add('is-opened');
+                    envelopeWrapper.classList.add('instant-read');
+                    envelopeWrapper.classList.remove('is-hidden');
                     document.body.classList.add('is-reading-letter'); 
+                    setTimeout(() => document.body.classList.add('pause-1'), 50);  
+                    setTimeout(() => document.body.classList.add('pause-2'), 250);  
+                    setTimeout(() => document.body.classList.add('pause-3'), 450);  
+                    envelopeWrapper.dataset.animating = "false";
                 });
             }
         }

@@ -193,7 +193,7 @@ async function drawCakeAnimated() {
             let blink = Math.abs(Math.sin(time * 0.5));
             window.ctx.font = `bold ${Math.min(20, window.width / 25)}px Arial`;
             window.ctx.fillStyle = `rgba(255, 255, 255, ${0.3 + blink * 0.7})`;
-            window.ctx.fillText("( Klik Atau Sentuh Layar Untuk Meniup Lilin )", window.width / 2, window.height / 2 + (250 * Math.min(1, window.width / 600)));
+            window.ctx.fillText("TAP", window.width / 2, window.height / 2 + (250 * Math.min(1, window.width / 600)));
         }
         
         window.ctx.globalAlpha = 1.0; 
